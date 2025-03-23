@@ -13,7 +13,7 @@ function TodoList({ todos, toggleTodo, deleteTodo }) {
           </span>
           <button
             onClick={() => deleteTodo(index)}  // Verwijder taak bij klik
-            className="bg-red-500 text-white p-1 rounded"
+            className="bg-secondary text-white p-1 rounded"
           >
             Verwijder
           </button>

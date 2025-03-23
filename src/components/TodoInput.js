@@ -1,4 +1,4 @@
-import React, { useState } from 'react';  // Hier importeer je useState
+import React, { useState } from 'react';
 
 function TodoInput({ addTodo }) {
   const [newTodo, setNewTodo] = useState("");  // Lokale state voor de nieuwe taak
@@ -11,17 +11,17 @@ function TodoInput({ addTodo }) {
   };
 
   return (
-    <div className="flex justify-center mb-4">
+    <div className="flex justify-center mb-6">
       <input
         type="text"
         value={newTodo}
         onChange={(e) => setNewTodo(e.target.value)}  // Update newTodo bij elke wijziging
         placeholder="Nieuwe taak"
-        className="p-2 border border-gray-300 rounded"
+        className="p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-primary w-2/3"
       />
       <button
         onClick={handleAddTodo}  // Voeg taak toe bij klik
-        className="ml-2 p-2 bg-blue-500 text-white rounded"
+        className="ml-4 p-3 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition duration-200"
       >
         Voeg toe
       </button>

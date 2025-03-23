@@ -1,27 +1,26 @@
 import React, { Suspense } from 'react';
-import { useTodos } from './hooks/useTodos';  // Importeren van de custom hook
+import { useTodos } from './hooks/useTodos';
 
-// Gebruik lazy loading voor componenten
 const TodoInput = React.lazy(() => import('./components/TodoInput'));
 const TodoList = React.lazy(() => import('./components/TodoList'));
 
 function App() {
-  // Gebruik de useTodos hook
   const { todos, addTodo, toggleTodo, deleteTodo } = useTodos();
 
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold text-center my-4">To-Do List</h1>
+    <div className="min-h-screen bg-white flex items-center justify-center">
+  <div className="bg-red p-8 rounded-lg shadow-xl w-full max-w-lg">
+    <h1 className="text-4xl font-semibold text-center text-primary mb-8 border-b-2 border-gray-300 pb-4">
+      Magick Todo-list
+    </h1>
 
-      {/* Gebruik Suspense voor de lazy loaded componenten */}
-      <Suspense fallback={<div>Loading...</div>}>
-        {/* TodoInput Component krijgt addTodo door als een prop */}
-        <TodoInput addTodo={addTodo} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <TodoInput addTodo={addTodo} />
+      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+    </Suspense>
+  </div>
+</div>
 
-        {/* TodoList-component krijgt todos, toggleTodo en deleteTodo door als props */}
-        <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
-      </Suspense>
-    </div>
   );
 }
 
