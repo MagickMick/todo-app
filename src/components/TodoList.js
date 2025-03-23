@@ -29,12 +29,12 @@ function TodoList({ todos, setTodos, toggleTodo, deleteTodo, editTodo }) {
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <div>
+      <div className="mb-6">
         {/* To-Do Items */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">To-Do</h2>
+          <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">To-Do</h2>
           <SortableContext items={todoItems.map(todo => todo.id)} strategy={verticalListSortingStrategy}>
-            <ul>
+            <ul className="space-y-4">
               {todoItems.map(todo => (
                 <SortableItem
                   key={todo.id}
@@ -52,10 +52,10 @@ function TodoList({ todos, setTodos, toggleTodo, deleteTodo, editTodo }) {
 
         {/* Completed Items */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">Completed</h2>
+          <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">Completed</h2>
           {/* Voeg SortableContext toe voor completed items */}
           <SortableContext items={completedItems.map(todo => todo.id)} strategy={verticalListSortingStrategy}>
-            <ul>
+            <ul className="space-y-4">
               {completedItems.map(todo => (
                 <SortableItem
                   key={todo.id}

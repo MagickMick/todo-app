@@ -24,11 +24,11 @@ function TodoInput({ addTodo }) {
         onChange={(e) => setNewTodo(e.target.value)}  // Update newTodo bij elke wijziging
         onKeyDown={handleKeyDown} // Luister naar toetsinvoer
         placeholder="New task"
-        className="p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-primary flex-1"
+        className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white flex-1"
       />
       <button
         onClick={handleAddTodo}  // Voeg taak toe bij klik
-        className="ml-4 p-3 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition duration-200"
+        className="ml-4 p-3 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition duration-200 dark:bg-primary dark:hover:bg-secondary-dark"
       >
         Add
       </button>
