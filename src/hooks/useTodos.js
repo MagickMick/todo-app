@@ -14,20 +14,35 @@ export const useTodos = () => {
 
   const addTodo = (newTodo) => {
     if (newTodo.trim()) {
-      setTodos([...todos, { text: newTodo, completed: false }]);
+      setTodos([
+        ...todos,
+        { id: Date.now(), text: newTodo, completed: false } // Gebruik een unieke id
+      ]);
     }
   };
 
-  const toggleTodo = (index) => {
+  const toggleTodo = (id) => {
+    const newTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    );
+    setTodos(newTodos);
+  };
+
+  const deleteTodo = (id) => {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
+  };
+
+  const editTodo = (id, newText) => {
     const newTodos = [...todos];
-    newTodos[index].completed = !newTodos[index].completed;
-    setTodos(newTodos);
+    const index = newTodos.findIndex(todo => todo.id === id);
+    if (index !== -1) {
+      newTodos[index].text = newText;
+      newTodos[index].isEditing = false; // Terug naar de normale weergave
+      setTodos(newTodos);
+    }
   };
+  
 
-  const deleteTodo = (index) => {
-    const newTodos = todos.filter((_, i) => i !== index);
-    setTodos(newTodos);
-  };
-
-  return { todos, addTodo, toggleTodo, deleteTodo };
+  return { todos, addTodo, toggleTodo, deleteTodo, editTodo, setTodos };
 };

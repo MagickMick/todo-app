@@ -11,19 +11,19 @@ function TodoInput({ addTodo }) {
   };
 
   return (
-    <div className="flex justify-center mb-6">
+    <div className="flex justify-center mb-6 w-full">
       <input
         type="text"
         value={newTodo}
         onChange={(e) => setNewTodo(e.target.value)}  // Update newTodo bij elke wijziging
-        placeholder="Nieuwe taak"
-        className="p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-primary w-2/3"
+        placeholder="New task"
+        className="p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-primary flex-1"
       />
       <button
         onClick={handleAddTodo}  // Voeg taak toe bij klik
         className="ml-4 p-3 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition duration-200"
       >
-        Voeg toe
+        Add
       </button>
     </div>
   );
