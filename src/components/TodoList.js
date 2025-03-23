@@ -1,5 +1,7 @@
 import React from 'react';
-import { TrashIcon, PencilIcon } from '@heroicons/react/24/outline';
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import { SortableContext, arrayMove, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import SortableItem from './SortableItem';
 
 function TodoList({ todos, setTodos, toggleTodo, deleteTodo, editTodo }) {
   const todoItems = todos.filter(todo => !todo.completed);
@@ -13,158 +15,63 @@ function TodoList({ todos, setTodos, toggleTodo, deleteTodo, editTodo }) {
     editTodo(id, newText);
   };
 
+  // Functie om de volgorde van de todo-items bij te werken
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      setTodos((prevTodos) => {
+        const oldIndex = prevTodos.findIndex(todo => todo.id === active.id);
+        const newIndex = prevTodos.findIndex(todo => todo.id === over.id);
+        return arrayMove(prevTodos, oldIndex, newIndex);
+      });
+    }
+  };
+
   return (
-    <div>
-      {/* To-Do Items */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-4">To-Do</h2>
-        <ul>
-          {todoItems.map(todo => (
-            <li key={todo.id} className="flex items-center justify-between mb-2">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => handleToggle(todo.id)}
-                  className="mr-2 peer"
-                />
-                {todo.isEditing ? (
-                  <input
-                    type="text"
-                    value={todo.text}
-                    onChange={(e) => {
-                      const updatedTodos = todos.map(t =>
-                        t.id === todo.id ? { ...t, text: e.target.value } : t
-                      );
-                      setTodos(updatedTodos); // Update text live while typing
-                    }}
-                    className="flex-1 text-lg"
-                  />
-                ) : (
-                  <span
-                    onClick={() => handleToggle(todo.id)} // Klikken op de tekst
-                    className="flex-1 text-lg"
-                  >
-                    {todo.text}
-                  </span>
-                )}
-              </label>
-
-              <div className="flex items-center space-x-2">
-                {todo.isEditing ? (
-                  <button
-                    onClick={() => {
-                      handleEdit(todo.id, todo.text); // Save the changes
-                      const updatedTodos = todos.map(t =>
-                        t.id === todo.id ? { ...t, isEditing: false } : t
-                      );
-                      setTodos(updatedTodos); // Disable editing mode
-                    }}
-                    className="ml-2 text-primary"
-                  >
-                    Ok
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      const updatedTodos = todos.map(t =>
-                        t.id === todo.id ? { ...t, isEditing: true } : t
-                      );
-                      setTodos(updatedTodos); // Enable editing state
-                    }}
-                    className="ml-2 text-primary"
-                  >
-                    <PencilIcon className="w-5 h-5 text-primary" />
-                  </button>
-                )}
-
-                <button
-                  onClick={() => deleteTodo(todo.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <TrashIcon className="w-5 h-5" />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Completed Items */}
+    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <div>
-        <h2 className="text-xl font-semibold mb-4">Completed</h2>
-        <ul>
-          {completedItems.map(todo => (
-            <li key={todo.id} className="flex items-center justify-between mb-2">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => handleToggle(todo.id)}
-                  className="mr-2 accent-primary peer"
+        {/* To-Do Items */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-4">To-Do</h2>
+          <SortableContext items={todoItems.map(todo => todo.id)} strategy={verticalListSortingStrategy}>
+            <ul>
+              {todoItems.map(todo => (
+                <SortableItem
+                  key={todo.id}
+                  todo={todo}
+                  todos={todos}
+                  setTodos={setTodos}
+                  handleToggle={handleToggle}
+                  handleEdit={handleEdit}
+                  deleteTodo={deleteTodo}
                 />
-                {todo.isEditing ? (
-                  <input
-                    type="text"
-                    value={todo.text}
-                    onChange={(e) => {
-                      const updatedTodos = todos.map(t =>
-                        t.id === todo.id ? { ...t, text: e.target.value } : t
-                      );
-                      setTodos(updatedTodos); // Update text live while typing
-                    }}
-                    className="flex-1 text-lg text-gray-400 line-through"
-                  />
-                ) : (
-                  <span
-                    onClick={() => handleToggle(todo.id)} // Klikken op de tekst
-                    className="flex-1 text-lg text-gray-400 line-through peer-checked:text-primary"
-                  >
-                    {todo.text}
-                  </span>
-                )}
-              </label>
+              ))}
+            </ul>
+          </SortableContext>
+        </div>
 
-              <div className="flex items-center space-x-2">
-                {todo.isEditing ? (
-                  <button
-                    onClick={() => {
-                      handleEdit(todo.id, todo.text); // Save the changes
-                      const updatedTodos = todos.map(t =>
-                        t.id === todo.id ? { ...t, isEditing: false } : t
-                      );
-                      setTodos(updatedTodos); // Disable editing mode
-                    }}
-                    className="ml-2 text-primary"
-                  >
-                    Ok
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      const updatedTodos = todos.map(t =>
-                        t.id === todo.id ? { ...t, isEditing: true } : t
-                      );
-                      setTodos(updatedTodos); // Enable editing state
-                    }}
-                    className="ml-2 text-primary"
-                  >
-                    <PencilIcon className="w-5 h-5 text-primary" />
-                  </button>
-                )}
-
-                <button
-                  onClick={() => deleteTodo(todo.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <TrashIcon className="w-5 h-5" />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {/* Completed Items */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Completed</h2>
+          {/* Voeg SortableContext toe voor completed items */}
+          <SortableContext items={completedItems.map(todo => todo.id)} strategy={verticalListSortingStrategy}>
+            <ul>
+              {completedItems.map(todo => (
+                <SortableItem
+                  key={todo.id}
+                  todo={todo}
+                  todos={todos}
+                  setTodos={setTodos}
+                  handleToggle={handleToggle}
+                  handleEdit={handleEdit}
+                  deleteTodo={deleteTodo}
+                />
+              ))}
+            </ul>
+          </SortableContext>
+        </div>
       </div>
-    </div>
+    </DndContext>
   );
 }
 

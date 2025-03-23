@@ -22,6 +22,7 @@ export const useTodos = () => {
   };
 
   const toggleTodo = (id) => {
+    console.log("inside the toggleTodo");
     const newTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
@@ -29,11 +30,13 @@ export const useTodos = () => {
   };
 
   const deleteTodo = (id) => {
+    console.log("inside the deleteTodo");
     const newTodos = todos.filter((todo) => todo.id !== id);
     setTodos(newTodos);
   };
 
   const editTodo = (id, newText) => {
+    console.log("inside the editTodo");
     const newTodos = [...todos];
     const index = newTodos.findIndex(todo => todo.id === id);
     if (index !== -1) {
