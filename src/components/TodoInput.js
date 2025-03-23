@@ -10,12 +10,19 @@ function TodoInput({ addTodo }) {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleAddTodo();
+    }
+  };
+
   return (
     <div className="flex justify-center mb-6 w-full">
       <input
         type="text"
         value={newTodo}
         onChange={(e) => setNewTodo(e.target.value)}  // Update newTodo bij elke wijziging
+        onKeyDown={handleKeyDown} // Luister naar toetsinvoer
         placeholder="New task"
         className="p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-primary flex-1"
       />
