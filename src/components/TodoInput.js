@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTodo } from '../store/todoSlice'; // Zorg ervoor dat je de juiste actie importeert
 
-function TodoInput({ addTodo }) {
-  const [newTodo, setNewTodo] = useState("");  // Lokale state voor de nieuwe taak
+function TodoInput() {
+  const dispatch = useDispatch();
+  const [newTodo, setNewTodo] = useState(""); // Lokale state voor het inputveld
 
   const handleAddTodo = () => {
     if (newTodo.trim()) {
-      addTodo(newTodo);  // Roep de addTodo functie aan vanuit de props
-      setNewTodo("");  // Maak het inputveld leeg
+      dispatch(addTodo(newTodo));  // Dispatch de addTodo actie naar Redux
+      setNewTodo("");  // Maak het inputveld leeg na het toevoegen
     }
   };
 
@@ -20,8 +23,8 @@ function TodoInput({ addTodo }) {
     <div className="flex justify-center mb-6 w-full">
       <input
         type="text"
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}  // Update newTodo bij elke wijziging
+        value={newTodo} // Bind de waarde van het inputveld aan de lokale state
+        onChange={(e) => setNewTodo(e.target.value)} // Update de lokale state bij elke wijziging
         onKeyDown={handleKeyDown} // Luister naar toetsinvoer
         placeholder="New task"
         className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white flex-1"
